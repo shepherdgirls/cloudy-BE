@@ -1,0 +1,21 @@
+# 환경 변수
+.env
+
+# 가상환경
+venv/
+
+# 캐시 및 pyc
+__pycache__/
+*.py[cod]
+
+# IDE 관련
+.vscode/
+.idea/
+
+# 정적파일 (필요 시)
+staticfiles/
+media/
+
+# 기타
+.DS_Store
+*.log
