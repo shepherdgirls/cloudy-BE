@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from login.views import GitHubLogin, GitHubOAuthURLView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('cloudy-auth/github/', GitHubLogin.as_view(), name='github-login'),
+    path('cloudy-auth/github-login/', GitHubOAuthURLView.as_view()),
 ]
