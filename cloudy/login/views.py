@@ -1,9 +1,10 @@
 import requests
 from django.conf import settings
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-from .utils import get_tokens_for_user
+from .utils import get_tokens_for_user, encrypt_token
 from urllib.parse import urlencode
 
 User = get_user_model()
@@ -59,7 +60,7 @@ class GitHubLogin(APIView):
             for e in email_list:
                 if e.get("primary") and e.get("verified"):
                     email = e.get("email")
-                    break
+                    break   
 
         if not github_id or not username:
             return Response({"error": "GitHub user info not valid", "details": user_info}, status=400)
@@ -71,8 +72,14 @@ class GitHubLogin(APIView):
                 "username": username,
                 "email": email,
                 "github_avatar_url": avatar_url,
+                "github_access_token": encrypt_token(access_token),
             }
         )
+
+        # 이미 존재하는 경우 access_token 갱신
+        if not created:
+            user.github_access_token = encrypt_token(access_token)
+            user.save()
 
         # 4. JWT 발급
         tokens = get_tokens_for_user(user)
@@ -87,3 +94,18 @@ class GitHubLogin(APIView):
             },
             "tokens": tokens
         })
+    
+    
+# 마이페이지
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        data = {
+            "username": user.username,
+            "email": user.email,
+            "github_avatar_url": user.github_avatar_url,}
+        
+        return Response(data)
