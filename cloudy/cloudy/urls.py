@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from login.views import GitHubLogin, GitHubOAuthURLView, Logout, ProfileView
-from github.views import GitHubRepoList
+from github.views import GitHubRepoList, GitHubCreateRepo
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
@@ -28,4 +28,5 @@ urlpatterns = [
     path('cloudy/cherry', ProfileView.as_view()),
     path("cloudy/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path('github/repos/', GitHubRepoList.as_view()),
+    path('github/create-repo/', GitHubCreateRepo.as_view()),
 ]
