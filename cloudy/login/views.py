@@ -3,7 +3,9 @@ from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import get_tokens_for_user, encrypt_token
 from urllib.parse import urlencode
 
@@ -20,6 +22,7 @@ class GitHubOAuthURLView(APIView):
         return Response({"url": github_auth_url})
 
 
+# 로그인
 class GitHubLogin(APIView):
     def post(self, request):
         code = request.data.get("code")
@@ -95,7 +98,24 @@ class GitHubLogin(APIView):
             "tokens": tokens
         })
     
-    
+
+# 로그아웃
+class Logout(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        refresh_token = request.data.get("refresh")
+
+        if not refresh_token:
+            return Response({"error": "refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
+                            
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist() 
+            return Response({"detail": "Logged out successfully."}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"error": "Logout failed", "detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 # 마이페이지
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]

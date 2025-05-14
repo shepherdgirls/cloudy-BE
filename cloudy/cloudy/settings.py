@@ -27,11 +27,11 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "bca6-58-142-233-246.ngrok-free.app",
+    "7336-222-110-177-102.ngrok-free.app",
 ]
 #config('ALLOWED_HOSTS', default='', cast=Csv())
 
-CORS_ALLOWED_ORIGINS = ["https://bca6-58-142-233-246.ngrok-free.app", "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["https://7336-222-110-177-102.ngrok-free.app", "http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = (
     "DELETE",
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
 
     'corsheaders',
 ]
@@ -175,7 +176,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),       
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),        
-    "ROTATE_REFRESH_TOKENS": False,
+    "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
