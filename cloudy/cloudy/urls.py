@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from login.views import GitHubLogin, GitHubOAuthURLView, Logout, ProfileView
 from github.views.repo import GitHubRepoList, GitHubCreateRepo
+from github.views.upload import GitHubUploadFiles
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
@@ -29,4 +30,5 @@ urlpatterns = [
     path("cloudy/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path('github/repos/', GitHubRepoList.as_view()),
     path('github/create-repo/', GitHubCreateRepo.as_view()),
+    path('github/upload-files/', GitHubUploadFiles.as_view()),
 ]
