@@ -24,14 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ENCRYPTION_KEY = config('ENCRYPTION_KEY')
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "42e0-58-79-8-251.ngrok-free.app",
-]
-#config('ALLOWED_HOSTS', default='', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=Csv())
 
-CORS_ALLOWED_ORIGINS = [" https://42e0-58-79-8-251.ngrok-free.app", "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["https://7336-222-110-177-102.ngrok-free.app", "http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = (
     "DELETE",
