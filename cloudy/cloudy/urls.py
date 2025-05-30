@@ -20,6 +20,7 @@ from login.views import GitHubLogin, GitHubOAuthURLView, Logout, ProfileView
 from github.views.repo import GitHubRepoList, GitHubCreateRepo
 from github.views.upload import GitHubUploadFiles
 from github.views.secrets import GitHubUploadSecrets
+from github.views.github_actions import GitHubActionsStatus
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
@@ -33,4 +34,5 @@ urlpatterns = [
     path('github/create-repo/', GitHubCreateRepo.as_view()),
     path('github/upload-files/', GitHubUploadFiles.as_view()),
     path('github/secrets/', GitHubUploadSecrets.as_view()),
+    path('github/actions-status/', GitHubActionsStatus.as_view()),
 ]
