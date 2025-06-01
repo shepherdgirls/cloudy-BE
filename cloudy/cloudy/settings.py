@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     
     'users',
     'login',
+    'terraform',
 
     'rest_framework',
     'rest_framework.authtoken',

@@ -1,0 +1,50 @@
+{
+    "template_name": "ec2_rds_alb",
+    "description": "EC2 + RDS + ALB 아키텍처를 위한 Terraform 템플릿",
+    "required_variables": [
+        {
+            "name": "project_name",
+            "type": "string",
+            "description": "AWS 리소스 태그로 사용될 프로젝트 이름"
+        },
+        {
+            "name": "ec2_instance_type",
+            "type": "string",
+            "default": "t3.micro",
+            "description": "EC2 인스턴스 타입"
+        },
+        {
+            "name": "ec2_ami_id",
+            "type": "string",
+            "description": "EC2에서 사용할 AMI ID (예: ami-0abcdef1234567890)"
+        },
+        {
+            "name": "rds_engine",
+            "type": "string",
+            "default": "mysql",
+            "description": "RDS 데이터베이스 엔진"
+        },
+        {
+            "name": "rds_instance_class",
+            "type": "string",
+            "default": "db.t3.micro",
+            "description": "RDS 인스턴스 타입"
+        },
+        {
+            "name": "rds_username",
+            "type": "string",
+            "description": "RDS 마스터 사용자 이름"
+        },
+        {
+            "name": "rds_password",
+            "type": "string",
+            "description": "RDS 마스터 비밀번호"
+        },
+        {
+            "name": "allowed_ip",
+            "type": "string",
+            "default": "0.0.0.0/0",
+            "description": "접근 허용할 IP 범위"
+        }
+    ]
+}

@@ -1,19 +1,3 @@
-"""
-URL configuration for cloudy project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from login.views import GitHubLogin, GitHubOAuthURLView, Logout, ProfileView
@@ -22,6 +6,7 @@ from github.views.upload import GitHubUploadFiles
 from github.views.secrets import GitHubUploadSecrets
 from github.views.github_actions import GitHubActionsStatus
 from rest_framework_simplejwt.views import TokenRefreshView
+from terraform.views import ProjectCreateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,4 +20,5 @@ urlpatterns = [
     path('github/upload-files/', GitHubUploadFiles.as_view()),
     path('github/secrets/', GitHubUploadSecrets.as_view()),
     path('github/actions-status/', GitHubActionsStatus.as_view()),
+    path('project/create/', ProjectCreateAPIView.as_view(), name='project-create'),
 ]
