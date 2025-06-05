@@ -130,3 +130,76 @@ class GitHubCreateRepo(APIView):
                 "default_branch": response_data["default_branch"],
             }
         }, status=status.HTTP_201_CREATED)
+
+# 파일 내용 조회
+class GitHubRepoFileContentsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        repo_name = request.query_params.get("repo_name")
+        branch = request.query_params.get("branch", "main")
+        path = request.query_params.get("path", "")
+
+        if not repo_name:
+            return Response({"error": "Missing required parameter: repo_name"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            access_token = decrypt_token(user.github_access_token)
+        except Exception as e:
+            return Response({"error": "Token decrypt failed", "detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        github_username = user.username
+        api_url = f"https://api.github.com/repos/{github_username}/{repo_name}/contents/{path}?ref={branch}"
+
+        headers = {
+            "Authorization": f"token {access_token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+
+        res = requests.get(api_url, headers=headers)
+        if res.status_code != status.HTTP_200_OK:
+            return Response({"error": "GitHub API error", "detail": res.json()}, status=res.status_code)
+
+        item = res.json()
+
+        if isinstance(item, list):
+            # 디렉토리: 각 파일 내용 포함해서 반환
+            files_data = []
+            for file in item:
+                content = None
+                if file["type"] == "file" and file.get("download_url"):
+                    file_res = requests.get(file["download_url"])
+                    if file_res.status_code == 200:
+                        content = file_res.text
+                files_data.append({
+                    "name": file["name"],
+                    "path": file["path"],
+                    "content": content
+                })
+            return Response({
+                "repo": repo_name,
+                "branch": branch,
+                "path": path,
+                "files": files_data
+            }, status=status.HTTP_200_OK)
+
+        elif isinstance(item, dict) and item.get("type") == "file":
+            # 단일 파일 요청
+            content = None
+            if item.get("download_url"):
+                file_res = requests.get(item["download_url"])
+                if file_res.status_code == 200:
+                    content = file_res.text
+            return Response({
+                "repo": repo_name,
+                "branch": branch,
+                "path": path,
+                "file": {
+                    "name": item["name"],
+                    "path": item["path"],
+                    "content": content
+                }
+            }, status=status.HTTP_200_OK)
+
+        return Response({"error": "Unexpected GitHub API response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
