@@ -26,6 +26,7 @@ class ProjectCreateAPIView(APIView):
         description = request.data.get("description")
         template_name = request.data.get("template_name")
         custom_values = request.data.get("custom_values", {})
+        repo_name = request.data.get("repo_name")
 
         # 1. 템플릿 경로 확인
         template_path = os.path.join(TEMPLATE_ROOT, template_name)
@@ -67,6 +68,7 @@ class ProjectCreateAPIView(APIView):
             user=user,
             name=name,
             description=description,
+            repo_name=repo_name,
             template_name=template_name,
             tfvars=json.dumps(custom_values),
             project_path=user_project_dir,
