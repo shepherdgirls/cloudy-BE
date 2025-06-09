@@ -5,6 +5,7 @@ from github.views.repo import GitHubRepoList, GitHubCreateRepo, GitHubRepoFileCo
 from github.views.upload import GitHubUploadFiles
 from github.views.secrets import GitHubUploadSecrets
 from github.views.github_actions import GitHubActionsStatus
+from tfsec.views import CheckTerraformSecurityView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
     path('github/upload-files/', GitHubUploadFiles.as_view()),
     path('github/secrets/', GitHubUploadSecrets.as_view()),
     path('github/actions-status/', GitHubActionsStatus.as_view()),
+    path('check_security/', CheckTerraformSecurityView.as_view()),
 ]

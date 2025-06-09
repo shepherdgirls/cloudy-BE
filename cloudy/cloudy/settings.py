@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     
     'users',
     'login',
+    'github',
+    'tfsec',
 
     'rest_framework',
     'rest_framework.authtoken',

@@ -8,12 +8,17 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     pkg-config \
     default-libmysqlclient-dev \
+    curl \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # pip 최신화 및 의존성 설치
 COPY requirements.txt ./
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+
+# tfsec 설치
+RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
 # 코드 복사
 COPY . .
